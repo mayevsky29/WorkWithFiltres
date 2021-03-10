@@ -21,7 +21,8 @@ namespace AddFiltrsInMagazine
         {
             InitializeComponent();
             _context = new EFContext();
-           
+            LoadFiltersValue();
+
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -170,8 +171,76 @@ namespace AddFiltrsInMagazine
             }
         }
 
+        private void btnAddFiltr_AutoSizeChanged(object sender, EventArgs e)
+        {
+            //AddFiltr dlg = new AddFiltr();
+            //dlg.ShowDialog();
+        }
 
+        
+        public void LoadFiltersValue()
+        {
+           
+            var queryValueName = from f in _context.FilterNames.AsQueryable() select f.Name;
+            foreach (var item in queryValueName)
+            {
+                cbFilters.Items.Add(item);
+            }
+        }
+        private void btnAddFiltr_Click(object sender, EventArgs e)
+        {
+            _context.FilterValues.Add(
+                new FilterValue
+                {
+                    Name = tbFilterValue.Text
+                });
+            _context.SaveChanges();
+            var nameId = _context.FilterNames
+                .SingleOrDefault(fName => fName.Name == cbFilters.SelectedItem.ToString()).Id;
+            var valueId = _context.FilterValues
+                .SingleOrDefault(fValue => fValue.Name == tbFilterValue.Text).Id;
+            
+            if (_context.FilterNameGroups
+                .SingleOrDefault(fNameGroups => fNameGroups.FilterValueId == valueId
+                && fNameGroups.FilterNameId == nameId) == null)
+            {
+                _context.FilterNameGroups.Add(
+                    new FilterNameGroup
+                    {
+                        FilterNameId = nameId,
+                        FilterValueId = valueId
+                    });
+                _context.SaveChanges();
+            }
+            this.Close();
 
+        }
+        private void cbFilters_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+        }
+
+        private void btnFilterName_Click(object sender, EventArgs e)
+        {
+            _context.FilterNames.Add(
+               new FilterName
+               {
+                   Name = tbFilterName.Text
+               });
+            _context.SaveChanges();
+
+            var nameId = _context.FilterNames
+           .SingleOrDefault(fName => fName.Name == tbFilterName.Text).Id;
+            if (_context.FilterNames.SingleOrDefault(f => f.Id == nameId) == null)
+                {
+                _context.FilterNames.Add(
+                    new FilterName
+                    {
+                        Name = Text
+                    });
+                    _context.SaveChanges();
+                }
+            this.Close();
+        }
     }
 }
