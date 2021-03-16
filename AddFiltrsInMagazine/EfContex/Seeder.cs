@@ -86,6 +86,54 @@ namespace AddFiltrsInMagazine.EfContex
 
             #endregion
 
+            #region tblProducts - Продукти
+            List<string> prods = new List<string>{
+                //Path.GetRandomFileName()
+             "154muv2f", "154m2fas"
+            };
+            if (context.Products.SingleOrDefault(f => f.UniqueName == prods[0]) == null)
+                context.Products.Add(
+                        new Product
+                        {
+                            UniqueName = prods[0],
+                            Price = 32599,
+                            Image = "https://hotline.ua/img/tx/262/2620857135.jpg",
+                            Name = "Ноутбук HP EliteBook 850 G6 (6XD79EA) Silver"
+                        });
+
+            if (context.Products.SingleOrDefault(f => f.UniqueName == prods[1]) == null)
+                context.Products.Add(
+                  new Product
+                  {
+                      UniqueName = prods[1],
+                      Price = 45999,
+                      Image = "https://hotline.ua/img/tx/208/208413187_s265.jpg",
+                      Name = "Dell XPS 15 7590 (X7590UTI932S10ND1650W-9S) Silver"
+                  });
+            context.SaveChanges();
+
+            #endregion
+
+
+            #region tblFilters -Фільтри
+            Filter[] filters =
+            {
+                new Filter { FilterNameId = 1, FilterValueId=1, ProductId=1 },
+                new Filter { FilterNameId = 2, FilterValueId=5, ProductId=1 },
+
+                new Filter { FilterNameId = 1, FilterValueId=2, ProductId=2 },
+                new Filter { FilterNameId = 2, FilterValueId=6, ProductId=2 }
+            };
+            foreach (var item in filters)
+            {
+                var f = context.Filters.SingleOrDefault(p => p == item);
+                if (f == null)
+                {
+                    context.Filters.Add(new Filter { FilterNameId = item.FilterNameId, FilterValueId = item.FilterValueId, ProductId = item.ProductId });
+                    context.SaveChanges();
+                }
+            }
+            #endregion
 
         }
 

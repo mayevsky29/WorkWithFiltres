@@ -3,41 +3,23 @@ using System;
 using AddFiltrsInMagazine.EfContex;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AddFiltrsInMagazine.Migrations
 {
     [DbContext(typeof(EFContext))]
-    partial class EFContextModelSnapshot : ModelSnapshot
+    [Migration("20210311082325_Add tblProducts")]
+    partial class AddtblProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            modelBuilder.Entity("AddFiltrsInMagazine.EfContex.Filter", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("FilterValueId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("FilterNameId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ProductId", "FilterValueId", "FilterNameId");
-
-                    b.HasIndex("FilterNameId");
-
-                    b.HasIndex("FilterValueId", "FilterNameId");
-
-                    b.ToTable("tblFilters");
-                });
 
             modelBuilder.Entity("AddFiltrsInMagazine.EfContex.FilterName", b =>
                 {
@@ -115,33 +97,6 @@ namespace AddFiltrsInMagazine.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tblProducts");
-                });
-
-            modelBuilder.Entity("AddFiltrsInMagazine.EfContex.Filter", b =>
-                {
-                    b.HasOne("AddFiltrsInMagazine.EfContex.FilterName", "FilterNameOf")
-                        .WithMany("Filters")
-                        .HasForeignKey("FilterNameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AddFiltrsInMagazine.EfContex.FilterValue", "FilterValueOf")
-                        .WithMany("Filters")
-                        .HasForeignKey("FilterValueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AddFiltrsInMagazine.EfContex.Product", "ProductOf")
-                        .WithMany("Filters")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AddFiltrsInMagazine.EfContex.FilterNameGroup", null)
-                        .WithMany("Filters")
-                        .HasForeignKey("FilterValueId", "FilterNameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("AddFiltrsInMagazine.EfContex.FilterNameGroup", b =>

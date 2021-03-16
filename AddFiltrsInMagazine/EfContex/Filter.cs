@@ -6,16 +6,19 @@ using System.Text;
 
 namespace AddFiltrsInMagazine.EfContex
 {
-    [Table("tblFilterNameGroups")]
-    public class FilterNameGroup
+    [Table("tblFilters")]
+    public class Filter
     {
-        [ForeignKey("FilterNameOf"), Key, Column(Order = 0)] // Order визначає послідовність
+        [ForeignKey("FilterNameOf"), Key, Column(Order = 0)]
         public int FilterNameId { get; set; }
         public virtual FilterName FilterNameOf { get; set; }
 
         [ForeignKey("FilterValueOf"), Key, Column(Order = 1)]
         public int FilterValueId { get; set; }
         public virtual FilterValue FilterValueOf { get; set; }
-        public virtual ICollection<Filter> Filters { get; set; }
+
+        [ForeignKey("ProductOf"), Key, Column(Order = 2)]
+        public int ProductId { get; set; }
+        public virtual Product ProductOf { get; set; }
     }
 }
